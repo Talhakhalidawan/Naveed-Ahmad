@@ -610,7 +610,8 @@ body::after {
 }
 
 .footer {
-    background: #000424;
+    backdrop-filter: blur(100px);
+    background: radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.02) 0%, rgba(255, 255, 255, 0.01) 50%, rgba(255, 255, 255, 0.03) 100%);
     text-align: center;
     padding: 12px;
     font-family: monospace;
