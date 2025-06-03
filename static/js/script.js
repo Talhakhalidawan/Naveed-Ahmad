@@ -53,24 +53,18 @@
         }
         
         // Preloader
-        function hidePreloader() {
+        window.addEventListener('load', () => {
             const preloader = document.querySelector('.preloader');
-            if (preloader) {
-                // preloader.classList.add('hide');
-                // Remove preloader from DOM after transition completes
+            setTimeout(() => {
+                preloader.classList.add('preloader-fade');
                 setTimeout(() => {
-                    preloader.remove();
-                }, 2000);
-            }
-        }
+                    preloader.style.display = 'none';
+                }, 500);
+            }, 1000);
+        });
         
         // Start typewriter effect after page loads
         window.addEventListener('load', () => {
-            // Hide preloader when page is loaded
-            setTimeout(() => {
-                hidePreloader();
-            }, 1000);
-            
             // Start typewriter effect
             setTimeout(typeWriter, 1000);
         });
@@ -159,4 +153,85 @@
             el.style.transform = 'translateY(30px)';
             el.style.transition = 'all 0.6s ease';
             observer.observe(el);
+        });
+
+
+        // Lazy loading images
+        document.addEventListener('DOMContentLoaded', function() {
+            const images = document.querySelectorAll('img[data-src]');
+            
+            const lazyLoad = target => {
+                const io = new IntersectionObserver((entries, observer) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            const img = entry.target;
+                            const src = img.getAttribute('data-src');
+                            
+                            img.setAttribute('src', src);
+                            img.classList.add('fade');
+                            
+                            observer.disconnect();
+                        }
+                    });
+                });
+                
+                io.observe(target);
+            };
+            
+            images.forEach(lazyLoad);
+        });
+
+        // Smooth scrolling for anchor links
+        document.addEventListener('DOMContentLoaded', function() {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const targetId = this.getAttribute('href');
+                    
+                    if (targetId === '#') return;
+                    
+                    const targetElement = document.querySelector(targetId);
+                    if (targetElement) {
+                        window.scrollTo({
+                            top: targetElement.offsetTop - 80, // Offset for fixed header
+                            behavior: 'smooth'
+                        });
+                    }
+                });
+            });
+        });
+
+        // Add schema markup dynamically if needed
+        function addDynamicSchema() {
+            // This function can be used to add dynamic schema based on page content
+            // For example, adding review schema based on testimonials
+        }
+
+        // Initialize any third-party scripts after page load
+        window.addEventListener('load', function() {
+            // Initialize any third-party scripts here to prevent render blocking
+        });
+
+        // Add structured data for FAQ if there are FAQ sections
+        function addFAQSchema() {
+            // This can be implemented if the site has a FAQ section
+        }
+
+        // Helper function to track outbound links for analytics
+        function trackOutboundLink(url) {
+            // Can be implemented with Google Analytics or other tracking
+            console.log('Outbound link clicked:', url);
+            return true;
+        }
+
+        // Add event listeners to track PDF downloads
+        document.addEventListener('DOMContentLoaded', function() {
+            const pdfLinks = document.querySelectorAll('a[href$=".pdf"]');
+            pdfLinks.forEach(link => {
+                link.addEventListener('click', function() {
+                    const pdfUrl = this.getAttribute('href');
+                    console.log('PDF downloaded:', pdfUrl);
+                    // Can implement tracking here
+                });
+            });
         });
